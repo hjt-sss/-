@@ -3,28 +3,19 @@
     <div class="search_input">
       <div class="search_input_wrapper">
         <i class="iconfont icon-sousuo"></i>
-        <input type="text">
+        <input type="text" v-model="message">
       </div>					
     </div>
     <div class="search_result">
       <h3>电影/电视剧/综艺</h3>
       <ul>
-        <li>
-          <div class="img"><img src="/images/movie_1.jpg"></div>
+        <li v-for="item in searchMovieList">
+          <div class="img"><img :src="item.img | setWH('128.180')"></div>
           <div class="info">
-            <p><span>无名之辈</span><span>8.5</span></p>
-            <p>A Cool Fish</p>
-            <p>剧情,喜剧,犯罪</p>
-            <p>2018-11-16</p>
-          </div>
-        </li>
-        <li>
-          <div class="img"><img src="/images/movie_1.jpg"></div>
-          <div class="info">
-            <p><span>无名之辈</span><span>8.5</span></p>
-            <p>A Cool Fish</p>
-            <p>剧情,喜剧,犯罪</p>
-            <p>2018-11-16</p>
+            <p><span>{{item.nm}}</span><img v-if="item.version" src="@/assets/maxs.png" alt=""><span>{{item.sc}}分</span></p>
+            <p>{{item.enm}}</p>
+            <p>{{item.cat}}</p>
+            <p>{{item.rt}}</p>
           </div>
         </li>
       </ul>
@@ -35,16 +26,42 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      message:'',
+      searchMovieList:[]
+    };
   },
-
-  components: {},
-
-  computed:{},
-
-  mounted () {},
-
-  methods: {},
+  watch:{
+    message(val){
+      var vm = this
+      // 取消上一次请求
+      vm.cancelRequest();
+      vm.$http.get(`/ajax/search?cityId=10&stype=-1&kw=`+val, {             
+        cancelToken: new vm.$http.CancelToken(function(c) {
+          vm.source = c;
+        })
+      }).then(res => {
+        if (res.statusText == "OK") {
+          vm.searchMovieList = res.data.movies.list
+        } else{
+          vm.searchMovieList = []
+        }
+      }).catch((err) => {
+          if (vm.$http.isCancel(err)) {
+            console.log('Rquest canceled', err.message); //请求如果被取消，这里是返回取消的message
+          } else {
+            console.log(err);
+          }
+      })
+    }
+  },
+  methods: {
+    cancelRequest(){
+      if(typeof this.source ==='function'){
+        this.source('终止请求')
+      }
+    }
+  },
 }
 </script>
 
@@ -58,7 +75,8 @@ export default {
   .search_body .search_result li{ border-bottom:1px #c9c9c9 dashed; padding: 10px 15px; box-sizing:border-box; display: flex;}
   .search_body .search_result .img{ width: 60px; float:left; }
   .search_body .search_result .img img{ width: 100%; }
-  .search_body .search_result .info{ float:left; margin-left: 15px; flex:1;}
+  .search_body .search_result .info{ float:left; margin-left: 15px; flex:1; position: relative;}
+  .search_body .search_result .info img{ width:50px; position: absolute; right:50px; top: 4px;}
   .search_body .search_result .info p{ height: 22px; display: flex; line-height: 22px; font-size: 12px;}
   .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(1){ font-size: 18px; flex:1; }
   .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(2){ font-size: 16px; color:#fc7103;}
