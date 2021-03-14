@@ -1,6 +1,7 @@
 <template>
   <div class="movie_body" ref="movie_body">
-    <Scroller :handleToScroll = 'handleToScroll' :handleToTouchEnd = 'handleToTouchEnd'>
+    <Loading v-if="isLoading"></Loading>
+    <Scroller v-else :handleToScroll = 'handleToScroll' :handleToTouchEnd = 'handleToTouchEnd'>
       <ul>
         <li class="pullDown">{{pullDown}}</li>
         <li v-for="item in movieList" :key="item.id">
@@ -25,13 +26,15 @@ export default {
   data() {
     return {
       movieList:[],
-      pullDown:''
+      pullDown:'',
+      isLoading: true
     };
   },
   mounted () {
     this.$http.get('/ajax/movieOnInfoList?ci=1').then(res => {
       if (res.statusText == "OK") {
         this.movieList = res.data.movieList
+        this.isLoading = false
       }
     })
   },

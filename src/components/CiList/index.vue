@@ -1,6 +1,7 @@
 <template>
   <div class="cinema_body">
-    <Scroller>
+    <Loading v-if="isLoading"></Loading>
+    <Scroller v-else>
       <ul>
         <li v-for="item in cinemaList" :key="item.id">
           <div>
@@ -24,7 +25,8 @@
 export default {
   data() {
     return {
-      cinemaList:[]
+      cinemaList:[],
+      isLoading: true
     };
   },
   mounted () {
@@ -35,6 +37,7 @@ export default {
       this.$http.get('/ajax/cinemaList?cityId=10').then(res => {
         if (res.statusText == 'OK') {
           this.cinemaList = res.data.cinemas
+          this.isLoading = false
         } else {
           this.cinemaList = []
         }

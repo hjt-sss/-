@@ -1,6 +1,7 @@
 <template>
   <div class="movie_body">
-    <Scroller>
+    <Loading v-if="isLoading"></Loading>
+    <Scroller v-else>
       <ul>
         <li v-for="item in movieList" :key="item.id">
           <div class="pic_show"><img :src="item.img | setWH('128.180')"></div>
@@ -23,7 +24,8 @@
 export default {
   data() {
     return {
-      movieList:[]
+      movieList:[],
+      isLoading: true
     };
   },
   mounted () {
@@ -35,6 +37,7 @@ export default {
       this.$http.get(`/ajax/comingList?ci=1&token=&limit=10&`).then(res => {
          if (res.statusText == "OK") {
           this.movieList = res.data.coming
+          this.isLoading = false
         } else {
           alert(res.status)
           this.movieList = []

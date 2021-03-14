@@ -1,7 +1,8 @@
 <template>
   <div class="city_body">
     <div class="city_list">
-      <Scroller ref="cityList">
+      <Loading v-if="isLoading"></Loading>
+      <Scroller v-else ref="cityList">
         <div>
           <div class="city_hot">
             <h2>热门城市</h2>
@@ -34,7 +35,8 @@ export default {
   data() {
     return {
       cityList:[],
-      hotList:[]
+      hotList:[],
+      isLoading: true
     };
   },
   mounted () {
@@ -44,6 +46,7 @@ export default {
         var {cityList, hotList} = this.formatCityList(cities)
         this.cityList = cityList
         this.hotList = hotList
+        this.isLoading = false
       }
     }).catch(err => {
       console.log(err)
