@@ -13,6 +13,8 @@ Vue.filter('setWH', (url, params) => {
 
 Vue.config.productionTip = false
 
+import Scroller from '@/components/Scroller'
+Vue.component('Scroller', Scroller)
 new Vue({
   router,
   store,

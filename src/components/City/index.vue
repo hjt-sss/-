@@ -1,20 +1,24 @@
 <template>
   <div class="city_body">
     <div class="city_list">
-      <div class="city_hot">
-        <h2>热门城市</h2>
-        <ul class="clearfix">
-          <li  v-for="i in hotList" :key="i.id">{{i.nm}}</li>
-        </ul>
-      </div>
-      <div class="city_sort" ref="citySort">
-        <div v-for="item in cityList" :key="item.id">
-          <h2>{{item.index}}</h2>
-          <ul v-for="i in item.list" :key="i.id">
-            <li>{{i.nm}}</li>
-          </ul>
-        </div>	
-      </div>
+      <Scroller ref="cityList">
+        <div>
+          <div class="city_hot">
+            <h2>热门城市</h2>
+            <ul class="clearfix">
+              <li  v-for="i in hotList" :key="i.id">{{i.nm}}</li>
+            </ul>
+          </div>
+          <div class="city_sort" ref="citySort">
+            <div v-for="item in cityList" :key="item.id">
+              <h2>{{item.index}}</h2>
+              <ul v-for="(i,index) in item.list" :key="index">
+                <li>{{i.nm}}</li>
+              </ul>
+            </div>	
+          </div>
+        </div>
+      </Scroller>
     </div>
     <div class="city_index">
       <ul>
@@ -96,7 +100,9 @@ export default {
     },
     handleToIndex(index){
       var h2 = this.$refs.citySort.getElementsByTagName('h2')
-      this.$refs.citySort.parentNode.scrollTop = h2[index].offsetTop
+      // this.$refs.citySort.parentNode.scrollTop = h2[index].offsetTop
+      this.$refs.cityList.toScrollTop(-h2[index].offsetTop)
+      
     }
   },
 }
