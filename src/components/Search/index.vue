@@ -35,8 +35,9 @@ export default {
     message(val){
       var vm = this
       // 取消上一次请求
+      var cityId = localStorage.getItem('nowCityId')
       vm.cancelRequest();
-      vm.$http.get(`/ajax/search?cityId=10&stype=-1&kw=`+val, {             
+      vm.$http.get('/ajax/search?cityId='+cityId+'&stype=-1&kw='+val, {             
         cancelToken: new vm.$http.CancelToken(function(c) {
           vm.source = c;
         })

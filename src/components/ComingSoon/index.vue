@@ -25,18 +25,23 @@ export default {
   data() {
     return {
       movieList:[],
-      isLoading: true
+      isLoading: true,
+      prevCityId: -1
     };
   },
-  mounted () {
+  activated () {
     this.queryMovieList()
   },
 
   methods: {
     queryMovieList(){
-      this.$http.get(`/ajax/comingList?ci=1&token=&limit=10&`).then(res => {
+      let cityId = localStorage.getItem('nowCityId')
+      if (this.prevCityId === cityId) { return; }
+      this.isLoading = true
+      this.$http.get('/ajax/comingList?ci='+cityId+'&token=&limit=10&').then(res => {
          if (res.statusText == "OK") {
           this.movieList = res.data.coming
+          this.prevCityId = cityId
           this.isLoading = false
         } else {
           alert(res.status)

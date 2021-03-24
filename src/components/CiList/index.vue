@@ -26,17 +26,22 @@ export default {
   data() {
     return {
       cinemaList:[],
-      isLoading: true
+      isLoading: true,
+      prevCityId: -1
     };
   },
-  mounted () {
+  activated () {
     this.$_queryCinemaList()
   },
   methods: {
     $_queryCinemaList(){
-      this.$http.get('/ajax/cinemaList?cityId=10').then(res => {
+      let cityId = localStorage.getItem('nowCityId')
+      if (this.prevCityId === cityId) { return; }
+      this.isLoading = true
+      this.$http.get('/ajax/cinemaList?cityId='+cityId).then(res => {
         if (res.statusText == 'OK') {
           this.cinemaList = res.data.cinemas
+          this.prevCityId = cityId
           this.isLoading = false
         } else {
           this.cinemaList = []

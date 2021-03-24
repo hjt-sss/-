@@ -4,7 +4,7 @@
     <div id="content">
       <div class="movie_menu">
         <router-link tag="div" to="/movie/city" class="city_name">
-          <span>大连</span><i class="iconfont icon-lower-triangle"></i>
+          <span>{{$store.state.city.nm}}</span><i class="iconfont icon-lower-triangle"></i>
         </router-link>
         <div class="hot_swtich">
           <router-link tag="div" to="/movie/nowplaying" class="hot_item">正在热映</router-link>
@@ -25,19 +25,38 @@
 <script>
 import Header from '@/components/Header'
 import TabBar from '@/components/TabBar'
+import {messageBox} from '@/components/JS'
 export default {
   name: 'Movie',
   data() {
     return {};
   },
-
   components: {Header, TabBar},
-
-  computed:{},
-
-  mounted () {},
-
-  methods: {},
+  mounted () {
+    this.$http.get('/miaomiao/localCity').then(res => {
+      if (res.status == 200) {
+        var cityName = res.data.data[0].nm
+        var cityId = res.data.data[0].id
+        if (this.$store.state.city.id == cityId) {
+          return
+        }
+        messageBox({
+          title: '定位',
+          content: cityName,
+          cancel:'取消',
+          ok:'切换定位',
+          handleOk(){
+            localStorage.setItem('nowCityNm', cityName)
+            localStorage.setItem('nowCityId', cityId)
+            //assgin记录浏览历史，所以可以实现后退功能
+            //replace不记录浏览历史替换当前页，不能后退
+            //reload()刷新页面,里面如果参数为true，强制刷新ctrl+f5
+            location.reload()
+          }
+        })
+      }
+    })
+  },
 }
 </script>
 

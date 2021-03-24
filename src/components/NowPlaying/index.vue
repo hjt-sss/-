@@ -27,13 +27,18 @@ export default {
     return {
       movieList:[],
       pullDown:'',
-      isLoading: true
+      isLoading: true,
+      prevCityId: -1 //当前城市id
     };
   },
-  mounted () {
-    this.$http.get('/ajax/movieOnInfoList?ci=1').then(res => {
+  activated () {
+    let cityId = localStorage.getItem('nowCityId')
+    if (this.prevCityId === cityId) { return; }
+    this.isLoading = true
+    this.$http.get('/ajax/movieOnInfoList?ci='+cityId).then(res => {
       if (res.statusText == "OK") {
         this.movieList = res.data.movieList
+        this.prevCityId = cityId
         this.isLoading = false
       }
     })
