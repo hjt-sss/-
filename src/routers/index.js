@@ -8,7 +8,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: process.env.BASE_URL, // 这里打印出来是‘/’
   routes: [
     movieRouter,
     cinemaRouter,
@@ -16,19 +16,6 @@ export default new Router({
     {
       path : '/*',
       redirect : '/movie'
-      // {
-      //   path: '/',
-      //   name: 'Home',
-      //   component: Home
-      // },
-      // {
-      //   path: '/about',
-      //   name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-      //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue') //按需加载  只有加载改组件才会加载该模块
-      // }
     }
   ]
 })
