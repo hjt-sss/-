@@ -47,7 +47,7 @@ export default {
       this.cityList = cityList1
       this.hotList = hotList1
     } else {
-      axios.get('/miaomiao/cityList').then(res => { //测试反向代理
+      axios.get('/api/cityList').then(res => { //测试反向代理
         if(res.data.meta.msg == "查询成功"){
           var cities = res.data.data
           var {cityList, hotList} = this.formatCityList(cities)

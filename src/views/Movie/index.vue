@@ -34,7 +34,7 @@ export default {
   },
   components: {Header, TabBar},
   mounted () {
-    this.$http.get('/miaomiao/localCity').then(res => {
+    this.$http.get('/api/localCity').then(res => {
       if (res.status == 200) {
         var cityName = res.data.data[0].nm
         var cityId = res.data.data[0].id
