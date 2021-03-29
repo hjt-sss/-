@@ -38,9 +38,10 @@ export default {
       let cityId = localStorage.getItem('nowCityId')
       if (this.prevCityId === cityId) { return; }
       this.isLoading = true
-      this.$http.get('/ajax/cinemaList?cityId='+cityId).then(res => {
+      // this.$http.get('/ajax/cinemaList?cityId='+cityId).then(res => {
+      this.$http.get('/api/cinema').then(res => {
         if (res.statusText == 'OK') {
-          this.cinemaList = res.data.cinemas
+          this.cinemaList = res.data.data
           this.prevCityId = cityId
           this.isLoading = false
         } else {

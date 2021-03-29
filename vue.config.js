@@ -16,5 +16,12 @@ module.exports = {
           changeOrigin: true
       },
     }
+  },
+  //标题title
+  chainWebpack: config => {
+    config.plugin('html').tap(args => {
+      args[0].title = '喵喵电影'
+      return args
+    });
   }
 }

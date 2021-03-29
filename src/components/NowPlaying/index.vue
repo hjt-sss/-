@@ -33,11 +33,12 @@ export default {
   },
   activated () {
     let cityId = localStorage.getItem('nowCityId')
-    if (this.prevCityId === cityId) { return; }
+    if (this.prevCityId === cityId) { return; } 
     this.isLoading = true
-    this.$http.get('/ajax/movieOnInfoList?ci='+cityId).then(res => {
+    // this.$http.get('/ajax/movieOnInfoList?ci='+cityId).then(res => {
+    this.$http.get('/api/NowPlaying').then(res => {
       if (res.statusText == "OK") {
-        this.movieList = res.data.movieList
+        this.movieList = res.data.data
         this.prevCityId = cityId
         this.isLoading = false
       }
