@@ -42,6 +42,7 @@ export default {
       this.$http.get('/api/cinema').then(res => {
         if (res.statusText == 'OK') {
           this.cinemaList = res.data.data
+          // this.cinemaList = res.data.cinemas
           this.prevCityId = cityId
           this.isLoading = false
         } else {

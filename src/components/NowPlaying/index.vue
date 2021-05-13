@@ -40,6 +40,7 @@ export default {
       if (res.statusText == "OK") {
         this.movieList = res.data.data
         this.prevCityId = cityId
+        // this.movieList = res.data.movieList
         this.isLoading = false
       }
     })

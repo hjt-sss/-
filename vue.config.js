@@ -3,10 +3,16 @@ module.exports = {
   devServer:{
     disableHostCheck: true,
     proxy: {
+      '/api2': {
+        // 'target': 'http://10.12.3.226:3000', //需要请求的地址   //公司局域网本机IP
+        'target': 'http://192.168.2.235:3000', //需要请求的地址    //家里WiFi本机IP
+        // 'target': 'http://192.168.43.122:3000', //需要请求的地址    //手机无线IP
+        'changeOrigin': true, //是否跨域
+      },
       '/api': {
-        'target': 'http://10.12.0.111:3000', //需要请求的地址   //公司局域网本机IP
-        // 'target': 'http://192.168.1.103:3000', //需要请求的地址    //家里WiFi本机IP
-        // 'target': 'http://192.168.43.16:3000', //需要请求的地址    //手机无线IP
+        // 'target': 'http://10.12.3.226:3000', //需要请求的地址   //公司局域网本机IP
+        'target': 'http://192.168.2.235:3000', //需要请求的地址    //家里WiFi本机IP
+        // 'target': 'http://192.168.43.122:3000', //需要请求的地址    //手机无线IP
         'changeOrigin': true, //是否跨域
       },
       '/ajax': {

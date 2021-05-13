@@ -1,11 +1,11 @@
 <template>
-   <div id="main">
-     <Header title="我的喵喵"></Header>
-     <div id="content">
-       <Login></Login>
-     </div>
-     <TabBar></TabBar>
-   </div>
+  <div id="main">
+    <Header title="我的喵喵"></Header>
+    <div id="content">
+      <router-view></router-view>
+    </div>
+    <TabBar></TabBar>
+  </div>
 </template>
 
 <script>
