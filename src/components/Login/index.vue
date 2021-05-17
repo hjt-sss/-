@@ -7,6 +7,9 @@
       <div>
         <input v-model="password" class="login_text" type="password" placeHolder="请输入您的密码" >
       </div>
+      <div>
+        <input v-model="verifyImg" class="login_text" type="text" placeHolder="请输入您的验证码"><img @click="handleToVerifyImg" src="/api/users/verifyImg" alt="">
+      </div>
       <div class="login_btn">
         <input type="submit" value="登录" @touchstart = 'handleToLogin()'>
       </div>
@@ -24,15 +27,20 @@ export default {
   data() {
     return {
       username:'',
-      password:''
+      password:'',
+      verifyImg:''
     };
   },
   methods: {
+    handleToVerifyImg(ev){
+      ev.target.src = '/api/users/verifyImg?'+Math.random()
+    },
     handleToLogin(){
       let vm = this
       var params = {
         username: this.username,  
-        password:this.password
+        password:this.password,
+        verifyImg:this.verifyImg
       }
       this.$http.post('/api/users/login',params).then(res => {
         if (res.data.status == 0) {

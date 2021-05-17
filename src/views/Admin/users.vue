@@ -1,6 +1,11 @@
 <template>
    <div>
-     <el-table :data="tableData" border style="width: 100%">
+     <el-table :data="nowTableData" border style="width: 100%">
+      <el-table-column prop="userHeader" label="用户头像">
+        <template slot-scope="scope">
+          <img class="userHeader" :src="scope.row.userHeader" alt="">
+        </template>
+      </el-table-column>
       <el-table-column prop="date" label="注册日期"></el-table-column>
       <el-table-column prop="username" label="用户姓名"></el-table-column>
       <el-table-column prop="email" label="用户邮箱"></el-table-column>
@@ -11,6 +16,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination class="page" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5,10,15]" :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length"></el-pagination>
    </div>
 </template>
 
@@ -18,13 +24,26 @@
 export default {
   data() {
     return {
-      tableData:[]
+      tableData:[],
+      currentPage:1,
+      pagesize: 10
     };
   },
   mounted(){
     this.getUserList()
   },
+  computed:{
+    nowTableData(){
+      return this.tableData.slice((this.currentPage - 1) * this.pagesize, this.currentPage*this.pagesize) || []
+    }
+  },
   methods:{
+    handleSizeChange(val){
+      this.pagesize = val
+    },
+    handleCurrentChange(val){
+      this.currentPage = val
+    },
     getUserList(){
       this.$http.get('/api/userList').then(res => {
         if (res.data.status == 0) {
@@ -62,5 +81,13 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-
+  .page{
+    margin-top: 20px;
+  }
+  .userHeader{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 </style>

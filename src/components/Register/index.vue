@@ -2,7 +2,7 @@
   <div id="content">
     <div class="register_body">
       <div class="register_email">
-        邮箱：<input v-model="email" type="text" class="register_text"><button @click="handleToSendVerify()">发送验证码</button>
+        邮箱：<input v-model="email" type="text" class="register_text"><button :disabled = disabled @click="handleToSendVerify()">{{verifyInfo}}</button>
       </div>
       <div>
         用户名：<input v-model="username" type="text" class="register_text">
@@ -10,9 +10,6 @@
       <div>
         密码：<input v-model="password" type="password" class="register_text">
       </div>
-      <!-- <div>
-        确认密码：<input type="password" class="register_text">
-      </div> -->
       <div>
         验证码：<input v-model="verify" type="text" class="register_text">
       </div>
@@ -35,17 +32,26 @@ export default {
       email:'',
       username:'',
       password:'',
-      verify:''
+      verify:'',
+      verifyInfo:'发送验证码',
+      disabled: false
     };
   },
   methods:{
     handleToSendVerify(){
+      if (this.disabled) {
+        return
+      }
       this.$http.get('/api/users/verify?email='+ this.email).then(res => {
+        var vm = this
         if (res.data.status == 0) {
           messageBox({
             title: '验证码',
             content:'验证码已发送',
             ok:'确定',
+            handleOk(){
+              vm.countDown()
+            }
           })
         } else {
           messageBox({
@@ -81,6 +87,20 @@ export default {
           })
         }
       })
+    },
+    countDown(){
+      this.disabled = true
+      var count = 60
+      var timer =  setInterval(() => {
+        count--;
+        this.verifyInfo = '剩余'+count+'s';
+        if (count == 0) {
+          this.disabled = false;
+          count = 60;
+          this.verifyInfo = '发送验证码',
+          clearInterval(timer)
+        }
+      },1000)
     }
   }
 }

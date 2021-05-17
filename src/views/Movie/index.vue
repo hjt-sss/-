@@ -42,7 +42,7 @@ export default {
           return
         }
         messageBox({
-          title: '定位',
+          title: '当前定位',
           content: cityName,
           cancel:'取消',
           ok:'切换定位',
