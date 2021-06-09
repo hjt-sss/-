@@ -38,7 +38,7 @@ export default {
     handleToLogin(){
       let vm = this
       var params = {
-        username: this.username,  
+        username: this.username,
         password:this.password,
         verifyImg:this.verifyImg
       }
@@ -49,7 +49,7 @@ export default {
             content:'登录成功',
             ok:'确定',
             handleOk(){
-              vm.$router.push('/mine/center')
+              vm.$router.push({ path: vm.$route.query.redirect || '/mine/center' }); //登录前点过别的跳转别的，没点过跳转个人中心
             }
           })
         } else {
